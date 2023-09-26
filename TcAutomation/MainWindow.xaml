@@ -1,0 +1,131 @@
+﻿<Window x:Class="TcAutomation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TcAutomation"
+        mc:Ignorable="d"
+        FontSize="14" FontFamily="Segoe UI"
+        Title="TwinCAT Controller" Height="700" Width="350">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <!--to make an artificial margin-->
+            <ColumnDefinition Width="100"/>
+            <!--for the elements-->
+            <ColumnDefinition Width="155"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <!--to make an artificial margin-->
+            <RowDefinition Height="20"/>
+            
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="10"/>
+
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="10"/>
+
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="10"/>
+
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="10"/>
+
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="10"/>
+
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="10"/>
+
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="10"/>
+
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="10"/>
+
+            <RowDefinition Height="30"/>
+
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="10"/>
+
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="10"/>
+
+            <!--to make an artificial margin-->
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        <!--Button1-->
+        <Button x:Name="button1" Grid.Column="1" Grid.Row="2" 
+                Content="Start" Click="button1_Click"
+         />
+        
+        <!--Button2-->
+        <Button x:Name="button2" Grid.Column="1" Grid.Row="5" 
+                Content="Build Solution" Click="button2_Click"
+         />
+
+        <!--Input1-->
+        <TextBox x:Name="input1" Grid.Column="1" Grid.Row="8" 
+                 Height="20"
+         />
+
+        <!--Button3-->
+        <Button x:Name="button3" Grid.Column="1" Grid.Row="9" 
+                Content="Set target NetId" Click="button3_Click"
+         />
+        
+        <!--Button4-->
+        <Button x:Name="button4" Grid.Column="1" Grid.Row="12" 
+                Content="Activate" Click="button4_Click"
+         />
+        
+        <!--Button5-->
+        <Button x:Name="button5" Grid.Column="1" Grid.Row="15" 
+                Content="Start/Restart" Click="button5_Click"
+         />
+
+        <!--Input2-->
+        <TextBox x:Name="input2" Grid.Column="1" Grid.Row="18" 
+                 Height="20"
+         />
+
+        <!--Button6-->
+        <Button x:Name="button6" Grid.Column="1" Grid.Row="19" 
+                Content="Read int from PLC" Click="button6_Click"
+         />
+        
+        <!--Button7-->
+        <Button x:Name="button7" Grid.Column="1" Grid.Row="22" 
+                Content="Start/Stop PLC" Click="button7_Click"
+         />
+        
+        <!--Button8-->
+        <Button x:Name="button8" Grid.Column="1" Grid.Row="25" 
+                Content="Enable/Disable" Click="button8_Click"
+         />
+        
+        <!--Button9-->
+        <Button x:Name="button9" Grid.Column="1" Grid.Row="29" 
+                Content="Close TwinCAT" Click="button9_Click"
+         />
+
+        <!--Label (margin: left, right, top, bottom)-->
+        <TextBlock x:Name="label1" Grid.Column="1" Grid.Row="32" 
+                Text="Status Label" TextAlignment="Center" VerticalAlignment="Center" 
+         />
+
+    </Grid>
+</Window>

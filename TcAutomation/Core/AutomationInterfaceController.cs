@@ -11,32 +11,33 @@ namespace TcAutomation.Core
 {
     public class AutomationInterfaceController : IAutomationInterfaceController
     {
-        private string productId = String.Empty;
-        private static Type typeOfInstance = null;
-        private static EnvDTE.DTE dte = null;
-        private static EnvDTE.Solution solution = null;
-        private static EnvDTE.Project project = null;
-        private static ITcSysManager15 sysManager = null;
+        private string _productId = String.Empty;
+        private static Type _typeOfInstance = null;
+        private static EnvDTE.DTE _dte = null;
+        private static EnvDTE.Solution _solution = null;
+        private static EnvDTE.Project _project = null;
+        private static ITcSysManager15 _sysManager = null;
 
         public AutomationInterfaceController(string productId)
         {
-            this.productId = productId;
+            this._productId = productId;
         }
 
+        // catch exception in Engine.cs, check if exception is the same!
         public string CreateInstance()
         {
             try
             {
-                typeOfInstance = System.Type.GetTypeFromProgID(productId);
+                _typeOfInstance = System.Type.GetTypeFromProgID(_productId);
             }
             catch (Exception e)
             {
-                return $"Error in GetTypeFromProgID: {e}";
+                return $"Error in GetTypeFromProgID: {e}"; // check if it add everything needed!
             }
 
             try
             {
-                dte = (EnvDTE.DTE)System.Activator.CreateInstance(typeOfInstance);
+                _dte = (EnvDTE.DTE)System.Activator.CreateInstance(_typeOfInstance);
             }
             catch (Exception e)
             {
@@ -45,8 +46,8 @@ namespace TcAutomation.Core
 
             try
             {
-                dte.SuppressUI = false;        // when true, the console will not be shown
-                dte.MainWindow.Visible = true; // when false, twincat will not be shown
+                _dte.SuppressUI = false;        // when true, the console will not be shown
+                _dte.MainWindow.Visible = true; // when false, twincat will not be shown
             }
             catch (Exception e)
             {
@@ -61,8 +62,8 @@ namespace TcAutomation.Core
         {
             try
             {
-                solution = dte.Solution;
-                solution.Open(@solutionPath);
+                _solution = _dte.Solution;
+                _solution.Open(@solutionPath);
             }
             catch (Exception e)
             {
@@ -75,8 +76,8 @@ namespace TcAutomation.Core
         {
             try
             {
-                project = solution.Projects.Item(1);
-                sysManager = (ITcSysManager15)project.Object;
+                _project = _solution.Projects.Item(1);
+                _sysManager = (ITcSysManager15)_project.Object;
             }
             catch (Exception e)
             {
@@ -89,7 +90,7 @@ namespace TcAutomation.Core
         {
             try
             {
-                solution.SolutionBuild.Build(true);
+                _solution.SolutionBuild.Build(true);
             }
             catch (Exception e)
             {
@@ -102,7 +103,7 @@ namespace TcAutomation.Core
         {
             try
             {
-                sysManager.SetTargetNetId(amsNetId);
+                _sysManager.SetTargetNetId(amsNetId);
             }
             catch (Exception e)
             {
@@ -110,7 +111,7 @@ namespace TcAutomation.Core
             }
             finally
             {
-                sysManager.SetTargetNetId(defaultAmsNetId);
+                _sysManager.SetTargetNetId(defaultAmsNetId);
             }
             return "Success";
         }
@@ -119,7 +120,7 @@ namespace TcAutomation.Core
         {
             try
             {
-                sysManager.ActivateConfiguration();
+                _sysManager.ActivateConfiguration();
             }
             catch (Exception e)
             {
@@ -132,7 +133,7 @@ namespace TcAutomation.Core
         {
             try
             {
-                sysManager.StartRestartTwinCAT();
+                _sysManager.StartRestartTwinCAT();
             }
             catch (Exception e)
             {
@@ -145,8 +146,8 @@ namespace TcAutomation.Core
         {
             try
             {
-                solution.SaveAs(solution.FullName);
-                solution.Close();
+                _solution.SaveAs(_solution.FullName);
+                _solution.Close();
             }
             catch (Exception e)
             {
@@ -159,7 +160,7 @@ namespace TcAutomation.Core
         {
             try
             {
-                dte.Quit();
+                _dte.Quit();
             }
             catch (Exception e)
             {

@@ -12,7 +12,7 @@ namespace TcAutomation.IO
     {
         public string ReadLine(object textBoxObject)
         {
-            if (textBoxObject is TextBox textBox)
+            if (textBoxObject is System.Windows.Controls.TextBox textBox)
             {
                 return textBox.Text;
             }
@@ -23,7 +23,7 @@ namespace TcAutomation.IO
                     string.Format
                       (
                           CustomExceptionMessages.InvalidTargetType,
-                          nameof(Label)
+                          nameof(System.Windows.Controls.TextBox)
                       ),
                       nameof(textBoxObject)
                  );

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Channels;
+//using System.Threading.Channels;
 using System.Threading.Tasks;
 using TCatSysManagerLib;
 using TcAutomation.Core.Contracts;
@@ -15,23 +15,23 @@ namespace TcAutomation.Core
 {
     public class AdsController : IAdsController
     {
-        private AdsClient client;
-        private string amsNetId;
-        private int portForAds;
-        private string nameOfEnableVar;
+        private AdsClient _client;
+        private string _amsNetId;
+        private int _portForAds;
+        private string _nameOfEnableVar;
 
         public AdsController(string amsNetId, int portForAds, string nameOfEnableVar)
         {
-            this.amsNetId = amsNetId;
-            this.portForAds = portForAds;
-            this.nameOfEnableVar = nameOfEnableVar;
+            this._amsNetId = amsNetId;
+            this._portForAds = portForAds;
+            this._nameOfEnableVar = nameOfEnableVar;
         }
 
         public string CreateInstance()
         {
             try
             {
-                this.client = new AdsClient();
+                this._client = new AdsClient();
             }
             catch (Exception e)
             {
@@ -44,7 +44,7 @@ namespace TcAutomation.Core
         {
             try
             {
-                this.client.Connect(amsNetId, portForAds);
+                this._client.Connect(_amsNetId, _portForAds);
             }
             catch (Exception e)
             {
@@ -61,7 +61,7 @@ namespace TcAutomation.Core
             // first try the general info
             try
             {
-                DeviceInfo deviceInfo = client.ReadDeviceInfo();
+                DeviceInfo deviceInfo = _client.ReadDeviceInfo();
                 Version version = deviceInfo.Version.ConvertToStandard();
                 resultString += $"Device name: {deviceInfo.Name}\n";
                 resultString += $"Device version: {version}\n";
@@ -76,8 +76,9 @@ namespace TcAutomation.Core
             {
                 try
                 {
-                    value = (int)client.ReadValue
+                    value = (int)_client.ReadValue
                     (
+                        //"MAIN.uiCounter",
                         nameOfIntVarToRead,
                         typeof(int)
                     );
@@ -85,7 +86,7 @@ namespace TcAutomation.Core
                 }
                 catch (Exception e)
                 {
-                    value = (int)client.ReadValue
+                    value = (int)_client.ReadValue
                     (
                         defaultNameOfIntVarToRead,
                         typeof(int)
@@ -108,7 +109,7 @@ namespace TcAutomation.Core
 
             try
             {
-                var boolStatus = client.ReadValue(nameOfEnableVar, typeof(bool));
+                var boolStatus = _client.ReadValue(_nameOfEnableVar, typeof(bool));
 
                 if (boolStatus is bool)
                 {
@@ -118,14 +119,14 @@ namespace TcAutomation.Core
                     {
                         // Write false to the PLC
                         valueToWrite = false;
-                        client.WriteValue(nameOfEnableVar, valueToWrite);
+                        _client.WriteValue(_nameOfEnableVar, valueToWrite);
                         resultString = $"Value written: {valueToWrite}";
                     }
                     else
                     {
                         // Write true to the PLC
                         valueToWrite = true;
-                        client.WriteValue(nameOfEnableVar, valueToWrite);
+                        _client.WriteValue(_nameOfEnableVar, valueToWrite);
                         resultString = $"Value written: {valueToWrite}";
                     }
                 }
@@ -147,21 +148,21 @@ namespace TcAutomation.Core
 
             try
             {
-                StateInfo stateInfo = client.ReadState();
+                StateInfo stateInfo = _client.ReadState();
                 AdsState state = AdsState.Invalid;
                 state = stateInfo.AdsState;
                 short deviceState = stateInfo.DeviceState;
 
                 if (state == AdsState.Stop)
                 {
-                    client.WriteControl(new StateInfo(AdsState.Run, 0));
+                    _client.WriteControl(new StateInfo(AdsState.Run, 0));
                 }
                 else if (state == AdsState.Run)
                 {
-                    client.WriteControl(new StateInfo(AdsState.Stop, 0));
+                    _client.WriteControl(new StateInfo(AdsState.Stop, 0));
                 }
 
-                stateInfo = client.ReadState();
+                stateInfo = _client.ReadState();
                 state = stateInfo.AdsState;
                 deviceState = stateInfo.DeviceState;
 
@@ -179,8 +180,8 @@ namespace TcAutomation.Core
         {
             try
             {
-                this.client.Disconnect();
-                this.client.Dispose();
+                this._client.Disconnect();
+                this._client.Dispose();
             }
             catch (Exception e)
             {

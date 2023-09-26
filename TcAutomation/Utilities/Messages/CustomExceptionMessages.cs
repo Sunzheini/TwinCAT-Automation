@@ -8,7 +8,7 @@ namespace TcAutomation.Utilities.Messages
 {
     public static class CustomExceptionMessages
     {
-        public const string InvalidTargetType = 
+        public const string InvalidTargetType =
             "Invalid target type. Expected {0}.";
     }
 }

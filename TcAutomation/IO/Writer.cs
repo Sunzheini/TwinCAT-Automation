@@ -10,13 +10,14 @@ namespace TcAutomation.IO
 {
     public class Writer : IWriter
     {
-        private readonly Label outputLabel;
+        // private readonly Label outputLabel;
+        private readonly System.Windows.Controls.Label outputLabel;
 
         public void Write(object labelObject, string message)
         {
-            if (labelObject is Label label)
+            if (labelObject is System.Windows.Controls.Label label)
             {
-                label.Text = message;
+                label.Content = message;
             }
             else
             {
@@ -25,7 +26,7 @@ namespace TcAutomation.IO
                     string.Format
                       (
                            CustomExceptionMessages.InvalidTargetType,
-                           nameof(Label)
+                           nameof(System.Windows.Controls.Label)
                       ),
                       nameof(labelObject)
                  );
@@ -34,10 +35,10 @@ namespace TcAutomation.IO
 
         public void WriteLine(object labelObject, string message)
         {
-            if (labelObject is Label label)
+            if (labelObject is System.Windows.Controls.Label label)
             {
                 // If you want to append a new line character after writing
-                label.Text += message + Environment.NewLine;
+                label.Content += message + Environment.NewLine;
             }
             else
             {
@@ -46,7 +47,7 @@ namespace TcAutomation.IO
                     string.Format
                       (
                           CustomExceptionMessages.InvalidTargetType,
-                          nameof(Label)
+                          nameof(System.Windows.Controls.Label)
                       ),
                       nameof(labelObject)
                  );
