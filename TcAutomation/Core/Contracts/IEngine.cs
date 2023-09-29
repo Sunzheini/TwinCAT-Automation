@@ -9,6 +9,8 @@ namespace TcAutomation.Core.Contracts
 {
     public interface IEngine
     {
+        string SolutionPath { get; set; }
+
         IWriter GetWriter();
 
         IReader GetReader();

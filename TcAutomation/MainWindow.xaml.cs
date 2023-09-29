@@ -27,13 +27,7 @@ using TcAutomation.IO.Contracts;
  */
 
 /*
-    There are hardcoded values in the Engine class. These values are:
-        1. productId
-        2. solutionPath
-        3. defaultAmsNetId
-        4. defaultNameOfIntVarToRead
-        5. nameOfEnableVar
-        6. portForAds
+    There are hardcoded values in the Engine class
  */
 
 namespace TcAutomation
@@ -48,7 +42,7 @@ namespace TcAutomation
         private IReader reader;
         private string _resultStringFromEngine = string.Empty;
         private string _inputFromTextBox = string.Empty;
-        private string _initialTextForStatusLabel = "Status Label";
+        private string _initialTextForStatusLabel = "Status: OK";
 
         public MainWindow()
         {
@@ -63,6 +57,23 @@ namespace TcAutomation
 
             //initial text for the label
             label1.Text = _initialTextForStatusLabel;
+        }
+
+        // browse
+        private void BrowseButton_Click(object sender, RoutedEventArgs e)
+        {
+            using (OpenFileDialog dialog = new OpenFileDialog())
+            {
+                dialog.Filter = "Solution Files (*.sln)|*.sln|All Files (*.*)|*.*";
+
+                DialogResult result = dialog.ShowDialog();
+                if (result == System.Windows.Forms.DialogResult.OK)
+                {
+                    string selectedFilePath = dialog.FileName;
+                    FolderPathTextBox.Text = selectedFilePath;
+                    engine.SolutionPath = selectedFilePath; // Set the selected solution file path.
+                }
+            }
         }
 
         // Start
@@ -103,15 +114,8 @@ namespace TcAutomation
             writer.Write(label1, _resultStringFromEngine);
         }
 
-        // Exit
-        public void button6_Click(object sender, RoutedEventArgs e)
-        {
-            _resultStringFromEngine = this.engine.Exit();
-            writer.Write(label1, _resultStringFromEngine);
-        }
-
         // Read Int From PLC
-        public void button7_Click(object sender, RoutedEventArgs e)
+        public void button6_Click(object sender, RoutedEventArgs e)
         {
             _inputFromTextBox = reader.ReadLine(input2);
             _resultStringFromEngine = this.engine.ReadFromPlc(_inputFromTextBox);
@@ -119,16 +123,23 @@ namespace TcAutomation
         }
 
         // Start/Stop PLC
-        public void button8_Click(object sender, RoutedEventArgs e)
+        public void button7_Click(object sender, RoutedEventArgs e)
         {
             _resultStringFromEngine = this.engine.ToggleStartStop();
             writer.Write(label1, _resultStringFromEngine);
         }
 
         // Enable/Disable
-        public void button9_Click(object sender, RoutedEventArgs e)
+        public void button8_Click(object sender, RoutedEventArgs e)
         {
             _resultStringFromEngine = this.engine.ToggleEnableDisable();
+            writer.Write(label1, _resultStringFromEngine);
+        }
+
+        // Exit
+        public void button9_Click(object sender, RoutedEventArgs e)
+        {
+            _resultStringFromEngine = this.engine.Exit();
             writer.Write(label1, _resultStringFromEngine);
         }
     }

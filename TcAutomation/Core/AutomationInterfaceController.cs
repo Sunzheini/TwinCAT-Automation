@@ -18,6 +18,8 @@ namespace TcAutomation.Core
         private static EnvDTE.Project _project = null;
         private static ITcSysManager15 _sysManager = null;
 
+        private string _returnStringWhenSuccess = "Success";
+
         public AutomationInterfaceController(string productId)
         {
             this._productId = productId;
@@ -32,7 +34,7 @@ namespace TcAutomation.Core
             }
             catch (Exception e)
             {
-                return $"Error in GetTypeFromProgID: {e}"; // check if it add everything needed!
+                return $"Error in GetTypeFromProgID: {e}";
             }
 
             try
@@ -54,8 +56,7 @@ namespace TcAutomation.Core
                 return $"Error in window options: {e}";
             }
 
-            // Provide a default return value if no exceptions are thrown
-            return "Success";
+            return _returnStringWhenSuccess;
         }
 
         public string OpenSolution(string solutionPath)
@@ -69,7 +70,7 @@ namespace TcAutomation.Core
             {
                 return $"Error in OpenSolution: {e}";
             }
-            return "Success";
+            return _returnStringWhenSuccess;
         }
 
         public string CreateITcSysManager()
@@ -83,7 +84,7 @@ namespace TcAutomation.Core
             {
                 return $"Error in CreateITcSysManager: {e}";
             }
-            return "Success";
+            return _returnStringWhenSuccess;
         }
 
         public string BuildSolution()
@@ -96,7 +97,7 @@ namespace TcAutomation.Core
             {
                 return $"Error in BuildSolution: {e}";
             }
-            return "Success";
+            return _returnStringWhenSuccess;
         }
 
         public string SetTargetNetId(string amsNetId, string defaultAmsNetId)
@@ -113,7 +114,7 @@ namespace TcAutomation.Core
             {
                 _sysManager.SetTargetNetId(defaultAmsNetId);
             }
-            return "Success";
+            return _returnStringWhenSuccess;
         }
 
         public string ActivateConfiguration()
@@ -126,7 +127,7 @@ namespace TcAutomation.Core
             {
                 return $"Error in ActivateConfiguration: {e}";
             }
-            return "Success";
+            return _returnStringWhenSuccess;
         }
 
         public string StartRestartTwinCAT()
@@ -139,7 +140,7 @@ namespace TcAutomation.Core
             {
                 return $"Error in StartRestartTwinCAT: {e}";
             }
-            return "Success";
+            return _returnStringWhenSuccess;
         }
 
         public string CloseSolution()
@@ -153,7 +154,7 @@ namespace TcAutomation.Core
             {
                 return $"Error in CloseSolution: {e}";
             }
-            return "Success";
+            return _returnStringWhenSuccess;
         }
 
         public string KillInstance()
@@ -166,7 +167,7 @@ namespace TcAutomation.Core
             {
                 return $"Error in KillInstance: {e}";
             }
-            return "Success";
+            return _returnStringWhenSuccess;
         }
     }
 }

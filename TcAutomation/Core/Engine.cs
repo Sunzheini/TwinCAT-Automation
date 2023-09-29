@@ -12,19 +12,26 @@ namespace TcAutomation.Core
 {
     public class Engine : IEngine
     {
-        // hardcoded values!!!
+        // this is needed for correct work of the program
         private string _productId = "TcXaeShell.DTE.15.0";
-        private string _solutionPath = "C:\\Appl\\Projects\\TwinCAT\\Test_Counter\\Test_Counter.sln"; // my path
-                                                                                                      // environment variables in visual studio to fetect,
 
-        // private string test = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-        // private string test2 = System.Reflection.Assembly.GetExecutingAssembly().Location; // location of the exe 
-
+        // default path of the solution (also has a setter in order to change it through a browse button)
+        private string _solutionPath = "C:\\Appl\\Projects\\TwinCAT\\Test_Counter\\Test_Counter.sln";
+                                                                                                    
         // either config file or inputs from the front end
         private string _defaultAmsNetId = "5.29.223.252.1.1"; // PLC
         private string _defaultNameOfIntVarToRead = "MAIN.uiCounter";
         private string _nameOfEnableVar = "MAIN.boEnable";
         private int _portForAds = 851;
+
+        //strings for return values
+        private string _returnStringWhenSuccess = "Success";
+        private string _returnStringStart = "Starting Finished";
+        private string _returnStringBuild = "Build Finished";
+        private string _returnStringSetTargetNetId = "Set TargetNetID Finished";
+        private string _returnStringActivateConfiguration = "Configuration Activated";
+        private string _returnStringStartRestartTwinCAT = "TwinCAT (re)started";
+        private string _returnStringExit = "Exited";
 
         private IReader reader;
         private IWriter writer;
@@ -33,9 +40,6 @@ namespace TcAutomation.Core
 
         private string _resultStringFromMethodExecution = string.Empty;
 
-        // __init__ method in python
-        // standard guide how to name variables in Festo due to Resharper
-        // _name for local variables
         public Engine()
         {
             reader = new Reader();
@@ -52,6 +56,12 @@ namespace TcAutomation.Core
             );
         }
 
+        public string SolutionPath
+        {
+            get { return _solutionPath; }
+            set { _solutionPath = value; }
+        }
+
         public IWriter GetWriter()
         {
             return writer;
@@ -62,80 +72,78 @@ namespace TcAutomation.Core
             return reader;
         }
 
-        // magic string!
-        // method1: catch the exception here to reduce the code
-        // 2: enumeration
+        // catch the exception here to reduce the code
         public string Start()
         {
             // method #1
             _resultStringFromMethodExecution = automationInterfaceController.CreateInstance();
-            if (_resultStringFromMethodExecution != "Success") return _resultStringFromMethodExecution;
+            if (_resultStringFromMethodExecution != _returnStringWhenSuccess) return _resultStringFromMethodExecution;
 
             // method #2
             _resultStringFromMethodExecution = automationInterfaceController.OpenSolution(_solutionPath);
-            if (_resultStringFromMethodExecution != "Success") return _resultStringFromMethodExecution;
+            if (_resultStringFromMethodExecution != _returnStringWhenSuccess) return _resultStringFromMethodExecution;
 
             // method #3
             _resultStringFromMethodExecution = automationInterfaceController.CreateITcSysManager();
-            if (_resultStringFromMethodExecution != "Success") return _resultStringFromMethodExecution;
+            if (_resultStringFromMethodExecution != _returnStringWhenSuccess) return _resultStringFromMethodExecution;
 
             // method #4
             _resultStringFromMethodExecution = adsController.CreateInstance();
-            if (_resultStringFromMethodExecution != "Success") return _resultStringFromMethodExecution;
+            if (_resultStringFromMethodExecution != _returnStringWhenSuccess) return _resultStringFromMethodExecution;
 
             // method #5
             _resultStringFromMethodExecution = adsController.ClientConnect();
-            if (_resultStringFromMethodExecution != "Success") return _resultStringFromMethodExecution;
+            if (_resultStringFromMethodExecution != _returnStringWhenSuccess) return _resultStringFromMethodExecution;
 
             // end
-            return "Starting Finished";
+            return _returnStringStart;
         }
 
         public string BuildSolution()
         {
             // method #1
             _resultStringFromMethodExecution = automationInterfaceController.BuildSolution();
-            if (_resultStringFromMethodExecution != "Success") return _resultStringFromMethodExecution;
+            if (_resultStringFromMethodExecution != _returnStringWhenSuccess) return _resultStringFromMethodExecution;
 
             // end
-            return "Build Finished";
+            return _returnStringBuild;
         }
 
         public string SetTargetNetId(string amsNetId)
         {
             // method #1
             _resultStringFromMethodExecution = automationInterfaceController.SetTargetNetId(amsNetId, _defaultAmsNetId);
-            if (_resultStringFromMethodExecution != "Success") return _resultStringFromMethodExecution;
+            if (_resultStringFromMethodExecution != _returnStringWhenSuccess) return _resultStringFromMethodExecution;
 
             // end
-            return "Set TargetNetID Finished";
+            return _returnStringSetTargetNetId;
         }
 
         public string ActivateConfiguration()
         {
             // method #1
             _resultStringFromMethodExecution = automationInterfaceController.ActivateConfiguration();
-            if (_resultStringFromMethodExecution != "Success") return _resultStringFromMethodExecution;
+            if (_resultStringFromMethodExecution != _returnStringWhenSuccess) return _resultStringFromMethodExecution;
 
             // end
-            return "Configuration Activated";
+            return _returnStringActivateConfiguration;
         }
 
         public string StartRestartTwinCAT()
         {
             // method #1
             _resultStringFromMethodExecution = automationInterfaceController.StartRestartTwinCAT();
-            if (_resultStringFromMethodExecution != "Success") return _resultStringFromMethodExecution;
+            if (_resultStringFromMethodExecution != _returnStringWhenSuccess) return _resultStringFromMethodExecution;
 
             // end
-            return "TwinCAT (re)started";
+            return _returnStringStartRestartTwinCAT;
         }
 
         public string ReadFromPlc(string nameOfIntVarToRead)
         {
             // method #1
             _resultStringFromMethodExecution = adsController.AdsReadFromPlc(nameOfIntVarToRead, _defaultNameOfIntVarToRead);
-            if (_resultStringFromMethodExecution != "Success") return _resultStringFromMethodExecution;
+            if (_resultStringFromMethodExecution != _returnStringWhenSuccess) return _resultStringFromMethodExecution;
 
             // end
             return _resultStringFromMethodExecution;
@@ -145,7 +153,7 @@ namespace TcAutomation.Core
         {
             // method #1
             _resultStringFromMethodExecution = adsController.ToggleEnable();
-            if (_resultStringFromMethodExecution != "Success") return _resultStringFromMethodExecution;
+            if (_resultStringFromMethodExecution != _returnStringWhenSuccess) return _resultStringFromMethodExecution;
 
             // end
             return _resultStringFromMethodExecution;
@@ -155,7 +163,7 @@ namespace TcAutomation.Core
         {
             // method #1
             _resultStringFromMethodExecution = adsController.ToggleStartStop();
-            if (_resultStringFromMethodExecution != "Success") return _resultStringFromMethodExecution;
+            if (_resultStringFromMethodExecution != _returnStringWhenSuccess) return _resultStringFromMethodExecution;
 
             // end
             return _resultStringFromMethodExecution;
@@ -165,18 +173,18 @@ namespace TcAutomation.Core
         {
             // method #1
             _resultStringFromMethodExecution = automationInterfaceController.CloseSolution();
-            if (_resultStringFromMethodExecution != "Success") return _resultStringFromMethodExecution;
+            if (_resultStringFromMethodExecution != _returnStringWhenSuccess) return _resultStringFromMethodExecution;
 
             // method #2
             _resultStringFromMethodExecution = automationInterfaceController.KillInstance();
-            if (_resultStringFromMethodExecution != "Success") return _resultStringFromMethodExecution;
+            if (_resultStringFromMethodExecution != _returnStringWhenSuccess) return _resultStringFromMethodExecution;
 
             // method #3
             _resultStringFromMethodExecution = adsController.ClientDisconnect();
-            if (_resultStringFromMethodExecution != "Success") return _resultStringFromMethodExecution;
+            if (_resultStringFromMethodExecution != _returnStringWhenSuccess) return _resultStringFromMethodExecution;
 
             // end
-            return "Exited";
+            return _returnStringExit;
         }
     }
 }

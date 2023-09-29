@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:TcAutomation"
         mc:Ignorable="d"
         FontSize="14" FontFamily="Segoe UI"
-        Title="TwinCAT Controller" Height="700" Width="350">
+        Title="TwinCAT Controller" Height="750" Width="370">
     <Grid>
         <Grid.ColumnDefinitions>
             <!--to make an artificial margin-->
@@ -20,6 +20,8 @@
             <RowDefinition Height="20"/>
             
             <RowDefinition Height="10"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="10"/>
 
@@ -67,64 +69,73 @@
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
 
+		<!--BrowseBlock-->
+		<Button x:Name="browseButton1" Grid.Column="1" Grid.Row="2"
+				Content="Browse TwinCAT Project" Click="BrowseButton_Click"/>
+		<TextBox Name="FolderPathTextBox" Grid.Column="1" Grid.Row="3"
+				 Text="Default path" FontSize="10" 
+				 TextAlignment="Center" VerticalAlignment="Center"
+				 IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
+		
         <!--Button1-->
-        <Button x:Name="button1" Grid.Column="1" Grid.Row="2" 
+        <Button x:Name="button1" Grid.Column="1" Grid.Row="4" 
                 Content="Start" Click="button1_Click"
          />
         
         <!--Button2-->
-        <Button x:Name="button2" Grid.Column="1" Grid.Row="5" 
+        <Button x:Name="button2" Grid.Column="1" Grid.Row="7" 
                 Content="Build Solution" Click="button2_Click"
          />
 
         <!--Input1-->
-        <TextBox x:Name="input1" Grid.Column="1" Grid.Row="8" 
+        <TextBox x:Name="input1" Grid.Column="1" Grid.Row="10" 
                  Height="20"
          />
 
         <!--Button3-->
-        <Button x:Name="button3" Grid.Column="1" Grid.Row="9" 
+        <Button x:Name="button3" Grid.Column="1" Grid.Row="11" 
                 Content="Set target NetId" Click="button3_Click"
          />
         
         <!--Button4-->
-        <Button x:Name="button4" Grid.Column="1" Grid.Row="12" 
-                Content="Activate" Click="button4_Click"
+        <Button x:Name="button4" Grid.Column="1" Grid.Row="14" 
+                Content="Activate Configuration" Click="button4_Click"
          />
         
         <!--Button5-->
-        <Button x:Name="button5" Grid.Column="1" Grid.Row="15" 
+        <Button x:Name="button5" Grid.Column="1" Grid.Row="17" 
                 Content="Start/Restart" Click="button5_Click"
          />
 
         <!--Input2-->
-        <TextBox x:Name="input2" Grid.Column="1" Grid.Row="18" 
+        <TextBox x:Name="input2" Grid.Column="1" Grid.Row="20" 
                  Height="20"
          />
 
         <!--Button6-->
-        <Button x:Name="button6" Grid.Column="1" Grid.Row="19" 
+        <Button x:Name="button6" Grid.Column="1" Grid.Row="21" 
                 Content="Read int from PLC" Click="button6_Click"
          />
         
         <!--Button7-->
-        <Button x:Name="button7" Grid.Column="1" Grid.Row="22" 
+        <Button x:Name="button7" Grid.Column="1" Grid.Row="24" 
                 Content="Start/Stop PLC" Click="button7_Click"
          />
         
         <!--Button8-->
-        <Button x:Name="button8" Grid.Column="1" Grid.Row="25" 
+        <Button x:Name="button8" Grid.Column="1" Grid.Row="27" 
                 Content="Enable/Disable" Click="button8_Click"
          />
         
         <!--Button9-->
-        <Button x:Name="button9" Grid.Column="1" Grid.Row="29" 
+        <Button x:Name="button9" Grid.Column="1" Grid.Row="31" 
                 Content="Close TwinCAT" Click="button9_Click"
          />
 
         <!--Label (margin: left, right, top, bottom)-->
-        <TextBlock x:Name="label1" Grid.Column="1" Grid.Row="32" 
+        <TextBlock x:Name="label1" Grid.Column="1" Grid.Row="34" 
                 Text="Status Label" TextAlignment="Center" VerticalAlignment="Center" 
+				FontSize="10" Height="70" 
          />
 
     </Grid>

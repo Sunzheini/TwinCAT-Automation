@@ -20,6 +20,8 @@ namespace TcAutomation.Core
         private int _portForAds;
         private string _nameOfEnableVar;
 
+        private string _returnStringWhenSuccess = "Success";
+
         public AdsController(string amsNetId, int portForAds, string nameOfEnableVar)
         {
             this._amsNetId = amsNetId;
@@ -37,7 +39,7 @@ namespace TcAutomation.Core
             {
                 return $"Error while creating AdsClient instance: {e}";
             }
-            return "Success";
+            return _returnStringWhenSuccess;
         }
 
         public string ClientConnect()
@@ -50,7 +52,7 @@ namespace TcAutomation.Core
             {
                 return $"Error while connecting to PLC: {e}";
             }
-            return "Success";
+            return _returnStringWhenSuccess;
         }
 
         public string AdsReadFromPlc(string nameOfIntVarToRead, string defaultNameOfIntVarToRead)
@@ -82,7 +84,7 @@ namespace TcAutomation.Core
                         nameOfIntVarToRead,
                         typeof(int)
                     );
-                    resultString += $"Value of variable {nameOfIntVarToRead}: {value}\n";
+                    resultString += $"Value of variable {nameOfIntVarToRead}: \n {value}\n";
                 }
                 catch (Exception e)
                 {
@@ -91,7 +93,7 @@ namespace TcAutomation.Core
                         defaultNameOfIntVarToRead,
                         typeof(int)
                     );
-                    resultString += $"Value of variable {defaultNameOfIntVarToRead}: {value}\n";
+                    resultString += $"Value of variable {defaultNameOfIntVarToRead}: \n {value}\n";
                 }
             }
             catch (Exception e)
@@ -187,7 +189,7 @@ namespace TcAutomation.Core
             {
                 return $"Error while disconnecting from PLC: {e}";
             }
-            return "Success";
+            return _returnStringWhenSuccess;
         }
     }
 }
