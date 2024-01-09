@@ -123,8 +123,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Core\MainWindowCore.cs" />
     <Compile Include="MessageFilter.cs" />
+    <Compile Include="Utilities\Constants\CustomConstants.cs" />
     <Compile Include="Utilities\Messages\CustomExceptionMessages.cs" />
+    <Compile Include="Utilities\Messages\CustomReturnMessages.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

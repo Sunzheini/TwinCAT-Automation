@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 
+// This class allows the automation server to handle the exception related to COMs. It is copied from TwinCAT documentation without any changes.
 namespace TcAutomation
 {
     public class MessageFilter : IOleMessageFilter

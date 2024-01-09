@@ -1,16 +1,12 @@
-﻿using Microsoft.VisualStudio.OLE.Interop;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-//using System.Threading.Channels;
-using System.Threading.Tasks;
-using TCatSysManagerLib;
+﻿using System;
 using TcAutomation.Core.Contracts;
 using TwinCAT.Ads;
+using TcAutomation.Utilities.Messages;
 
 
+/// <summary>
+/// Used to manipulate the ADS library for TwinCAT.
+/// </summary>
 namespace TcAutomation.Core
 {
     public class AdsController : IAdsController
@@ -20,8 +16,6 @@ namespace TcAutomation.Core
         private int _portForAds;
         private string _nameOfEnableVar;
 
-        private string _returnStringWhenSuccess = "Success";
-
         public AdsController(string amsNetId, int portForAds, string nameOfEnableVar)
         {
             this._amsNetId = amsNetId;
@@ -29,6 +23,10 @@ namespace TcAutomation.Core
             this._nameOfEnableVar = nameOfEnableVar;
         }
 
+        /// <summary>
+        /// Creates an instance of the AdsClient class.
+        /// </summary>
+        /// <returns></returns>
         public string CreateInstance()
         {
             try
@@ -37,11 +35,15 @@ namespace TcAutomation.Core
             }
             catch (Exception e)
             {
-                return $"Error while creating AdsClient instance: {e}";
+                return string.Format(CustomExceptionMessages.CreatingAdsClientError, e.Message);
             }
-            return _returnStringWhenSuccess;
+            return CustomReturnMessages.returnStringWhenSuccess;
         }
 
+        /// <summary>
+        /// Connects to the PLC.
+        /// </summary>
+        /// <returns></returns>
         public string ClientConnect()
         {
             try
@@ -50,17 +52,23 @@ namespace TcAutomation.Core
             }
             catch (Exception e)
             {
-                return $"Error while connecting to PLC: {e}";
+                return string.Format(CustomExceptionMessages.ConnectingToPlcError, e.Message);
             }
-            return _returnStringWhenSuccess;
+            return CustomReturnMessages.returnStringWhenSuccess;
         }
 
+        /// <summary>
+        /// Reads the device info and a variable from the PLC.
+        /// </summary>
+        /// <param name="nameOfIntVarToRead"></param>
+        /// <param name="defaultNameOfIntVarToRead"></param>
+        /// <returns></returns>
         public string AdsReadFromPlc(string nameOfIntVarToRead, string defaultNameOfIntVarToRead)
         {
             int value = 0;
             string resultString = string.Empty;
 
-            // first try the general info
+            // first try to read the general info
             try
             {
                 DeviceInfo deviceInfo = _client.ReadDeviceInfo();
@@ -70,7 +78,7 @@ namespace TcAutomation.Core
             }
             catch (Exception e)
             {
-                return $"Error while reading device info from PLC: {e}";
+                return string.Format(CustomExceptionMessages.ReadingDeviceInfoError, e.Message);
             }
 
             // now try to read a variable
@@ -80,7 +88,6 @@ namespace TcAutomation.Core
                 {
                     value = (int)_client.ReadValue
                     (
-                        //"MAIN.uiCounter",
                         nameOfIntVarToRead,
                         typeof(int)
                     );
@@ -98,12 +105,16 @@ namespace TcAutomation.Core
             }
             catch (Exception e)
             {
-                return $"Error while reading variable from PLC: {e}";
+                return string.Format(CustomExceptionMessages.ReadingVariableError, e.Message);
             }
 
             return resultString;
         }
 
+        /// <summary>
+        /// Toggle the enable variable in the PLC program.
+        /// </summary>
+        /// <returns></returns>
         public string ToggleEnable()
         {
             string resultString = string.Empty;
@@ -139,11 +150,15 @@ namespace TcAutomation.Core
             }
             catch (Exception e)
             {
-                return $"Error while enabling / disabling: {e}";
+                return string.Format(CustomExceptionMessages.EnablingDisablingError, e.Message);
             }
             return resultString;
         }
 
+        /// <summary>
+        /// Toggle the start / stop state of the PLC program.
+        /// </summary>
+        /// <returns></returns>
         public string ToggleStartStop()
         {
             string resultString = string.Empty;
@@ -173,11 +188,15 @@ namespace TcAutomation.Core
             }
             catch (Exception e)
             {
-                return $"Error while starting / stopping: {e}";
+                return string.Format(CustomExceptionMessages.StartingStoppingError, e.Message);
             }
             return resultString;
         }
 
+        /// <summary>
+        /// Disconnects from the PLC.
+        /// </summary>
+        /// <returns></returns>
         public string ClientDisconnect()
         {
             try
@@ -187,9 +206,9 @@ namespace TcAutomation.Core
             }
             catch (Exception e)
             {
-                return $"Error while disconnecting from PLC: {e}";
+                return string.Format(CustomExceptionMessages.DisconnectingError, e.Message);
             }
-            return _returnStringWhenSuccess;
+            return CustomReturnMessages.returnStringWhenSuccess;
         }
     }
 }

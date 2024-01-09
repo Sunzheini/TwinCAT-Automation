@@ -1,33 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TcAutomation.Core;
-using TcAutomation.Core.Contracts;
-using TcAutomation.IO.Contracts;
-//using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 /*
-    Dependencies:
+    Manage Dependencies:
         1. Rightclick on Dependencies --> Add COM Reference --> Beckhoff TwinCAT XAE Base 3.3. Type Library
         2. Rightclick on Dependencies --> Manage Nuget Packages --> Browse: envdte --> install envdte and envdte80 by Microsoft
         3. Click on Tools --> Nuget Package Manager --> Manage Nuget Packages for Solution --> Beckhoff.TwinCAT.Ads --> Select solution
- */
-
-/*
-    There are hardcoded values in the Engine class
  */
 
 namespace TcAutomation
@@ -37,110 +16,148 @@ namespace TcAutomation
     /// </summary>
     public partial class MainWindow : Window
     {
-        private IEngine engine;
-        private IWriter writer;
-        private IReader reader;
+        // string vars to be used below
         private string _resultStringFromEngine = string.Empty;
         private string _inputFromTextBox = string.Empty;
         private string _initialTextForStatusLabel = "Status: OK";
+        private string _dialogFilter = "Solution Files (*.sln)|*.sln|All Files (*.*)|*.*";
+
+        // initialize the objects here
+        private MainWindowCore _mainWindowCore;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            // Initialize the backend engine
-            engine = new Engine();
-
-            // retrieve the instances from the engine
-            this.writer = engine.GetWriter();
-            this.reader = engine.GetReader();
+            // Initialize MainWindowCore
+            _mainWindowCore = new MainWindowCore();
 
             //initial text for the label
             label1.Text = _initialTextForStatusLabel;
         }
 
-        // browse
+        /// <summary>
+        /// Browse for the solution file button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BrowseButton_Click(object sender, RoutedEventArgs e)
         {
             using (OpenFileDialog dialog = new OpenFileDialog())
             {
-                dialog.Filter = "Solution Files (*.sln)|*.sln|All Files (*.*)|*.*";
+                dialog.Filter = _dialogFilter;
 
                 DialogResult result = dialog.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
                     string selectedFilePath = dialog.FileName;
-                    FolderPathTextBox.Text = selectedFilePath;
-                    engine.SolutionPath = selectedFilePath; // Set the selected solution file path.
+                    string path = _mainWindowCore.SelectFilePath(selectedFilePath); // Set the selected solution file path.
+                    FolderPathTextBox.Text = path;
                 }
             }
         }
 
-        // Start
+        /// <summary>
+        /// Start button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void button1_Click(object sender, RoutedEventArgs e)
         {
-            _resultStringFromEngine = this.engine.Start();
-            writer.Write(label1, _resultStringFromEngine);
+            _resultStringFromEngine = _mainWindowCore.Start();
+            _mainWindowCore.writer.Write(label1, _resultStringFromEngine);
         }
 
-        // Build Solution
+        /// <summary>
+        /// Build Solution button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void button2_Click(object sender, RoutedEventArgs e)
         {
-            _resultStringFromEngine = this.engine.BuildSolution();
-            writer.Write(label1, _resultStringFromEngine);
+            _resultStringFromEngine = _mainWindowCore.BuildSolution();
+            _mainWindowCore.writer.Write(label1, _resultStringFromEngine);
         }
 
-        // Set Target NetId
+        /// <summary>
+        /// Set Target NetId button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void button3_Click(object sender, RoutedEventArgs e)
         {
-            _inputFromTextBox = reader.ReadLine(input1);
-            _resultStringFromEngine = this.engine.SetTargetNetId(_inputFromTextBox);
-            writer.Write(label1, _resultStringFromEngine);
+            _inputFromTextBox = _mainWindowCore.reader.ReadLine(input1);
+            _resultStringFromEngine = _mainWindowCore.SetTargetNetId(_inputFromTextBox);
+            _mainWindowCore.writer.Write(label1, _resultStringFromEngine);
 
             input1.Text = "";
         }
 
-        // Activate Configuration
+        /// <summary>
+        /// Activate Configuration button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void button4_Click(object sender, RoutedEventArgs e)
         {
-            _resultStringFromEngine = this.engine.ActivateConfiguration();
-            writer.Write(label1, _resultStringFromEngine);
+            _resultStringFromEngine = _mainWindowCore.ActivateConfiguration();
+            _mainWindowCore.writer.Write(label1, _resultStringFromEngine);
         }
 
-        // Start/Restart TwinCAT
+        /// <summary>
+        /// Start/Restart TwinCAT button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void button5_Click(object sender, RoutedEventArgs e)
         {
-            _resultStringFromEngine = this.engine.StartRestartTwinCAT();
-            writer.Write(label1, _resultStringFromEngine);
+            _resultStringFromEngine = _mainWindowCore.StartRestartTwinCAT();
+            _mainWindowCore.writer.Write(label1, _resultStringFromEngine);
         }
 
-        // Read Int From PLC
+        /// <summary>
+        /// Read Int From PLC button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void button6_Click(object sender, RoutedEventArgs e)
         {
-            _inputFromTextBox = reader.ReadLine(input2);
-            _resultStringFromEngine = this.engine.ReadFromPlc(_inputFromTextBox);
-            writer.Write(label1, _resultStringFromEngine);
+            _inputFromTextBox = _mainWindowCore.reader.ReadLine(input2);
+            _resultStringFromEngine = _mainWindowCore.ReadFromPlc(_inputFromTextBox);
+            _mainWindowCore.writer.Write(label1, _resultStringFromEngine);
         }
 
-        // Start/Stop PLC
+        /// <summary>
+        /// Start/Stop PLC button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void button7_Click(object sender, RoutedEventArgs e)
         {
-            _resultStringFromEngine = this.engine.ToggleStartStop();
-            writer.Write(label1, _resultStringFromEngine);
+            _resultStringFromEngine = _mainWindowCore.ToggleStartStop();
+            _mainWindowCore.writer.Write(label1, _resultStringFromEngine);
         }
 
-        // Enable/Disable
+        /// <summary>
+        /// Enable/Disable button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void button8_Click(object sender, RoutedEventArgs e)
         {
-            _resultStringFromEngine = this.engine.ToggleEnableDisable();
-            writer.Write(label1, _resultStringFromEngine);
+            _resultStringFromEngine = _mainWindowCore.ToggleEnableDisable();
+            _mainWindowCore.writer.Write(label1, _resultStringFromEngine);
         }
 
-        // Exit
+        /// <summary>
+        /// Exit button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public void button9_Click(object sender, RoutedEventArgs e)
         {
-            _resultStringFromEngine = this.engine.Exit();
-            writer.Write(label1, _resultStringFromEngine);
+            _resultStringFromEngine = _mainWindowCore.Exit();
+            _mainWindowCore.writer.Write(label1, _resultStringFromEngine);
         }
     }
 }

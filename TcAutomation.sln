@@ -5,6 +5,8 @@ VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcAutomation", "TcAutomation\TcAutomation.csproj", "{D27B19E3-E53F-4B57-9771-FD3D04681833}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcAutomationLibrary", "TcAutomationLibrary\TcAutomationLibrary.csproj", "{CA7D441B-EF77-4C32-BCFE-EB0D1FDDECA2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{D27B19E3-E53F-4B57-9771-FD3D04681833}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D27B19E3-E53F-4B57-9771-FD3D04681833}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D27B19E3-E53F-4B57-9771-FD3D04681833}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA7D441B-EF77-4C32-BCFE-EB0D1FDDECA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA7D441B-EF77-4C32-BCFE-EB0D1FDDECA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA7D441B-EF77-4C32-BCFE-EB0D1FDDECA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA7D441B-EF77-4C32-BCFE-EB0D1FDDECA2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TCatSysManagerLib;
-
-namespace TcAutomation.Core.Contracts
+﻿namespace TcAutomation.Core.Contracts
 {
     public interface IAutomationInterfaceController
     {

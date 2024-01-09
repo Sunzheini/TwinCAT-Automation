@@ -1,16 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TCatSysManagerLib;
 using TcAutomation.Core.Contracts;
-using TcAutomation.IO.Contracts;
+using TcAutomation.Utilities.Messages;
 
+
+/// <summary>
+/// Used to manipulate the Automation interface of TwinCAT.
+/// </summary>
 namespace TcAutomation.Core
 {
     public class AutomationInterfaceController : IAutomationInterfaceController
     {
+        // Needed for the Automation interface
         private string _productId = String.Empty;
         private static Type _typeOfInstance = null;
         private static EnvDTE.DTE _dte = null;
@@ -18,14 +19,15 @@ namespace TcAutomation.Core
         private static EnvDTE.Project _project = null;
         private static ITcSysManager15 _sysManager = null;
 
-        private string _returnStringWhenSuccess = "Success";
-
         public AutomationInterfaceController(string productId)
         {
             this._productId = productId;
         }
 
-        // catch exception in Engine.cs, check if exception is the same!
+        /// <summary>
+        /// Creates an instance of the Automation interface.
+        /// </summary>
+        /// <returns></returns>
         public string CreateInstance()
         {
             try
@@ -34,7 +36,7 @@ namespace TcAutomation.Core
             }
             catch (Exception e)
             {
-                return $"Error in GetTypeFromProgID: {e}";
+                return string.Format(CustomExceptionMessages.GetTypeFromProductIdError, e);
             }
 
             try
@@ -43,7 +45,7 @@ namespace TcAutomation.Core
             }
             catch (Exception e)
             {
-                return $"Error while creating instance: {e}";
+                return string.Format(CustomExceptionMessages.CreateInstanceError, e);
             }
 
             try
@@ -53,12 +55,17 @@ namespace TcAutomation.Core
             }
             catch (Exception e)
             {
-                return $"Error in window options: {e}";
+                return string.Format(CustomExceptionMessages.WindowOptionsError, e);
             }
 
-            return _returnStringWhenSuccess;
+            return CustomReturnMessages.returnStringWhenSuccess;
         }
 
+        /// <summary>
+        /// Opens a solution in TwinCAT
+        /// </summary>
+        /// <param name="solutionPath"></param>
+        /// <returns></returns>
         public string OpenSolution(string solutionPath)
         {
             try
@@ -68,11 +75,15 @@ namespace TcAutomation.Core
             }
             catch (Exception e)
             {
-                return $"Error in OpenSolution: {e}";
+                return string.Format(CustomExceptionMessages.OpenSolutionError, e);
             }
-            return _returnStringWhenSuccess;
+            return CustomReturnMessages.returnStringWhenSuccess; ;
         }
 
+        /// <summary>
+        /// Creates an instance of the ITcSysManager interface
+        /// </summary>
+        /// <returns></returns>
         public string CreateITcSysManager()
         {
             try
@@ -82,11 +93,15 @@ namespace TcAutomation.Core
             }
             catch (Exception e)
             {
-                return $"Error in CreateITcSysManager: {e}";
+                return string.Format(CustomExceptionMessages.CreateITcSysManagerError, e);
             }
-            return _returnStringWhenSuccess;
+            return CustomReturnMessages.returnStringWhenSuccess; ;
         }
 
+        /// <summary>
+        /// Builds the solution
+        /// </summary>
+        /// <returns></returns>
         public string BuildSolution()
         {
             try
@@ -95,11 +110,17 @@ namespace TcAutomation.Core
             }
             catch (Exception e)
             {
-                return $"Error in BuildSolution: {e}";
+                return string.Format(CustomExceptionMessages.BuildSOlutionError, e);
             }
-            return _returnStringWhenSuccess;
+            return CustomReturnMessages.returnStringWhenSuccess; ;
         }
 
+        /// <summary>
+        /// Sets the target net id
+        /// </summary>
+        /// <param name="amsNetId"></param>
+        /// <param name="defaultAmsNetId"></param>
+        /// <returns></returns>
         public string SetTargetNetId(string amsNetId, string defaultAmsNetId)
         {
             try
@@ -108,15 +129,19 @@ namespace TcAutomation.Core
             }
             catch (Exception e)
             {
-                return $"Error in SetTargetNetId: {e}";
+                return string.Format(CustomExceptionMessages.SetTargetNetIdError, e);
             }
             finally
             {
                 _sysManager.SetTargetNetId(defaultAmsNetId);
             }
-            return _returnStringWhenSuccess;
+            return CustomReturnMessages.returnStringWhenSuccess; ;
         }
 
+        /// <summary>
+        /// Activates the configuration
+        /// </summary>
+        /// <returns></returns>
         public string ActivateConfiguration()
         {
             try
@@ -125,11 +150,15 @@ namespace TcAutomation.Core
             }
             catch (Exception e)
             {
-                return $"Error in ActivateConfiguration: {e}";
+                return string.Format(CustomExceptionMessages.ActivateConfigurationError, e);
             }
-            return _returnStringWhenSuccess;
+            return CustomReturnMessages.returnStringWhenSuccess; ;
         }
 
+        /// <summary>
+        /// Starts or restarts TwinCAT
+        /// </summary>
+        /// <returns></returns>
         public string StartRestartTwinCAT()
         {
             try
@@ -138,11 +167,15 @@ namespace TcAutomation.Core
             }
             catch (Exception e)
             {
-                return $"Error in StartRestartTwinCAT: {e}";
+                return string.Format(CustomExceptionMessages.StartRestartTwinCATError, e);
             }
-            return _returnStringWhenSuccess;
+            return CustomReturnMessages.returnStringWhenSuccess; ;
         }
 
+        /// <summary>
+        /// Closes the solution
+        /// </summary>
+        /// <returns></returns>
         public string CloseSolution()
         {
             try
@@ -152,11 +185,15 @@ namespace TcAutomation.Core
             }
             catch (Exception e)
             {
-                return $"Error in CloseSolution: {e}";
+                return string.Format(CustomExceptionMessages.CloseSolutionError, e);
             }
-            return _returnStringWhenSuccess;
+            return CustomReturnMessages.returnStringWhenSuccess; ;
         }
 
+        /// <summary>
+        /// Kills the instance of TwinCAT
+        /// </summary>
+        /// <returns></returns>
         public string KillInstance()
         {
             try
@@ -165,9 +202,9 @@ namespace TcAutomation.Core
             }
             catch (Exception e)
             {
-                return $"Error in KillInstance: {e}";
+                return string.Format(CustomExceptionMessages.KillInstanceError, e);
             }
-            return _returnStringWhenSuccess;
+            return CustomReturnMessages.returnStringWhenSuccess; ;
         }
     }
 }
